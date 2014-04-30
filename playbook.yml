@@ -1,0 +1,36 @@
+---
+  - hosts: reposado
+    vars_files:
+    - vars.yml
+    pre_tasks:
+    - name: Update RetHat System
+      when: ansible_os_family == "RedHat"
+      shell: yum -y update
+    - name: Update apt cache if needed 
+      when: ansible_os_family == "Debian"
+      apt: update_cache=yes cache_valid_time=3600
+    handlers:
+    - name: restart apache
+      command: service httpd restart
+    tasks:
+    - name: Install needed packages 
+      yum: pkg={{ item }} state=installed
+      with_items:
+      - git
+      - httpd
+      - vixie-cron
+      - python-setuptools
+      - ntp
+    
+    - name: start and enable ntp
+      service: name=ntpd state=started enabled=yes
+      
+    # make sure to create a template ulysses!!   
+    - name: Create reposado virtualhost
+      file: >
+        src=templates/redosado.conf.j2
+        dest=/etc/httpd/conf.d/reposado.conf
+        owner=root group=root mode=0644
+      notify: restart apache
+      
+  
