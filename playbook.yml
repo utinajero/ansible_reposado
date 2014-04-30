@@ -1,5 +1,5 @@
 ---
-  - hosts: www1
+  - hosts: www1.ulysses.lan
     vars_files:
     - vars.yml
     handlers:
