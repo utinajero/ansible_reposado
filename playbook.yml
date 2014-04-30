@@ -1,14 +1,7 @@
 ---
-  - hosts: reposado
+  - hosts: www1
     vars_files:
     - vars.yml
-    pre_tasks:
-    - name: Update RetHat System
-      when: ansible_os_family == "RedHat"
-      shell: yum -y update
-    - name: Update apt cache if needed 
-      when: ansible_os_family == "Debian"
-      apt: update_cache=yes cache_valid_time=3600
     handlers:
     - name: restart apache
       command: service httpd restart
@@ -21,16 +14,52 @@
       - vixie-cron
       - python-setuptools
       - ntp
+      - curl
     
     - name: start and enable ntp
       service: name=ntpd state=started enabled=yes
       
     # make sure to create a template ulysses!!   
     - name: Create reposado virtualhost
-      file: >
+      template: >
         src=templates/redosado.conf.j2
         dest=/etc/httpd/conf.d/reposado.conf
         owner=root group=root mode=0644
       notify: restart apache
       
+    - name: "Reposado: Checkout reposado master branch"
+      git: repo=https://github.com/wdas/reposado.git dest=/usr/local/sbin
+      
+    - name: "Create reposado directories and set permissions"
+      file: >
+        path=/var/local/reposado/html
+        mode=0777
+        state=directory
+        recurse=yes
+    - name: "Create reposado directories and set permissions"
+      file: >
+        path=/var/local/reposado/metadata
+        mode=0777
+        state=directory
+        recurse=yes
+    
+    
+    - name: "Run the chcon command"
+      command: chcon -R -v --type=httpd_sys_content_t /var/local/reposado/html
+      
+    # - name: "serivce iptables stop"
+    #   service: name=iptables state=stop
+      
+    - name: "Removing the welcome.conf site"
+      command: rm -rf /etc/httpd/conf.d/welcome.conf
+      
+    - name: "Apache: Enable +Indexes"
+      lineinfile: >
+        dest=/etc/httpd/conf/httpd.conf
+        regexp="\sOptions\sFollowSymLinks"
+        line="Options FollowSymLinks +Indexes"
+        state=present
+      notify: restart apache
+      
+    
   

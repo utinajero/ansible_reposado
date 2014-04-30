@@ -1,0 +1,12 @@
+# HTTP Virtual Host
+<VirtualHost *:80> 
+# General
+  ServerAdmin {{ server_admin }}
+  DocumentRoot {{ doc_root }}
+  ServerName {{ domain }}
+  ServerAlias {{ domain }}
+  
+# Logging
+  ErrorLog logs/{{ domain }}-error_log
+  CustomLog logs/{{ domain }}-access_log common
+</VirtualHost>
