@@ -13,13 +13,8 @@
       - httpd
       - vixie-cron
       - python-setuptools
-      - ntp
       - curl
-    
-    - name: start and enable ntp
-      service: name=ntpd state=started enabled=yes
       
-    # make sure to create a template ulysses!!   
     - name: Create reposado virtualhost
       template: >
         src=templates/redosado.conf.j2
@@ -46,9 +41,6 @@
     
     - name: "Run the chcon command"
       command: chcon -R -v --type=httpd_sys_content_t /var/local/reposado/html
-      
-    # - name: "serivce iptables stop"
-    #   service: name=iptables state=stop
       
     - name: "Removing the welcome.conf site"
       command: rm -rf /etc/httpd/conf.d/welcome.conf
