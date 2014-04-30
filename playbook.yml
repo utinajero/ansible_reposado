@@ -57,7 +57,7 @@
       lineinfile: >
         dest=/etc/httpd/conf/httpd.conf
         regexp="\sOptions\sFollowSymLinks"
-        line="Options FollowSymLinks +Indexes"
+        line="    Options FollowSymLinks +Indexes"
         state=present
       notify: restart apache
       
