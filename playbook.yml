@@ -84,7 +84,7 @@
       
     - name: "Enable apache site for Ubuntu"
       when: ansible_os_family == "Debian"
-      command: a2ensite {{ domain }}
+      command: a2ensite reposado.conf
       notify: restart apache
 
     - name: "Enable Apache to start at boot"
