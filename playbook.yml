@@ -46,9 +46,11 @@
     
     - name: "Run the chcon command"
       command: chcon -R -v --type=httpd_sys_content_t /var/local/reposado/html
+      when: ansible_os_family == "RedHat"
+      ignore_errors: yes
 
-    - name: "Stop iptables service dev mode"
-      command: service iptables stop
+    - name: "Stop iptables service dev environment"
+      service: name=iptables state=stopped
       ignore_errors: yes
       
     - name: "Removing the welcome.conf site"
@@ -61,6 +63,9 @@
         line="    Options FollowSymLinks +Indexes"
         state=present
       notify: restart apache
-      
+    
+    - name: "Installing repo_sync cron job"
+      cron: name="repo_sync" user="root" hour="3" job="/usr/local/sbin/reposado/code/repo_sync >/dev/null"
+    
     
   
