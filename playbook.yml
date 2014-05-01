@@ -5,10 +5,8 @@
     - "vars/{{ ansible_os_family }}.yml"
     handlers:
     - name: restart apache
-      # turn httpd to variable 
       command: service {{apache}} restart
     tasks:
-      # add support for ubuntu to turn variables
     - name: Install needed packages for reposado | CentOS
       when: ansible_os_family == "RedHat"
       yum: pkg={{ item }} state=installed
@@ -21,7 +19,6 @@
       with_items:
         - "{{ apps }}"
       
-      #learn how to create vhost for ubuntu 
     - name: Create reposado virtualhost | CentOS
       when: ansible_os_family == "RedHat"
       template: >
