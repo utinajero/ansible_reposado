@@ -13,46 +13,51 @@
       when: ansible_os_family == "RedHat"
       yum: pkg={{ item }} state=installed
       with_items:
-        - {{ apps }}
+        - "{{ apps }}"
     
-    # - name: Install needed packages for reposado | Ubuntu
-    #   when: ansible_os_family == "Debian"
-    #   apt: pkg={{ item }} state=installed
-    #   with_items:
-    #   - git
-    #   - httpd
-    #   - python-setuptools
-    #   - curl
+    - name: Install needed packages for reposado | Ubuntu
+      when: ansible_os_family == "Debian"
+      apt: pkg={{ item }} state=installed
+      with_items:
+        - "{{ apps }}"
       
-      # learn how to create vhost for ubuntu 
-    # - name: Create reposado virtualhost
-  #     template: >
-  #       src=templates/redosado.conf.j2
-  #       dest=/etc/httpd/conf.d/reposado.conf
-  #       owner=root group=root mode=0644
-  #     notify: restart apache
-  #     
-  #   - name: Create reposado directory and setting permissions 
-  #     file: >
-  #       path=/usr/local/sbin/reposado
-  #       mode=0755
-  #       state=directory
-  #     
-  #   - name: "Reposado: Checkout reposado master branch"
-  #     git: repo=https://github.com/wdas/reposado.git dest=/usr/local/sbin/reposado
-  #     
-  #   - name: "Create reposado/html directory and setting permissions"
-  #     file: >
-  #       path=/var/local/reposado/html
-  #       mode=0755
-  #       state=directory
-  #       recurse=yes
-  #   - name: "Create reposado/metadata directory and setting permissions"
-  #     file: >
-  #       path=/var/local/reposado/metadata
-  #       mode=0755
-  #       state=directory
-  #       recurse=yes
+      #learn how to create vhost for ubuntu 
+    - name: Create reposado virtualhost | CentOS
+      when: ansible_os_family == "RedHat"
+      template: >
+        src=templates/redosado.conf.j2
+        dest=/etc/httpd/conf.d/reposado.conf
+        owner=root group=root mode=0644
+      notify: restart apache
+      
+    - name: Create reposado virtualhost | Ubuntu
+      when: ansible_os_family == "Debian"
+      template: >
+        src=templates/susreposado.conf.j2
+        dest=/etc/apache2/sites-available/reposado.conf
+        owner=root group=root mode=0644
+      
+    - name: Create reposado directory and setting permissions 
+      file: >
+        path=/usr/local/sbin/reposado
+        mode=0755
+        state=directory
+      
+    - name: "Reposado: Checkout reposado master branch"
+      git: repo=https://github.com/wdas/reposado.git dest=/usr/local/sbin/reposado
+      
+    - name: "Create reposado/html directory and setting permissions"
+      file: >
+        path=/var/local/reposado/html
+        mode=0755
+        state=directory
+        recurse=yes
+    - name: "Create reposado/metadata directory and setting permissions"
+      file: >
+        path=/var/local/reposado/metadata
+        mode=0755
+        state=directory
+        recurse=yes
   #   
   #   - name: "Run the chcon command"
   #     command: chcon -R -v --type=httpd_sys_content_t /var/local/reposado/html
