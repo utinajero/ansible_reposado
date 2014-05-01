@@ -54,7 +54,8 @@
       ignore_errors: yes
       
     - name: "Removing the welcome.conf site"
-      command: rm -rf /etc/httpd/conf.d/welcome.conf
+      #command: rm -rf /etc/httpd/conf.d/welcome.conf
+      file: path="/etc/httpd/conf.d/welcome.conf" state=absent
       
     - name: "Apache: Enable +Indexes"
       lineinfile: >
