@@ -21,3 +21,6 @@ sudo ./repoutil --configure # the next 3 lines below are the answers that need t
 http://su.your.org # change this one to your FQDN
 sudo ./repo_sync
 ```	
+
+Further information can be found here:
+https://github.com/wdas/reposado/tree/master/docs
