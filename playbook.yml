@@ -62,10 +62,10 @@
       when: ansible_os_family == "RedHat"
       ignore_errors: yes
   
-    - name: "Stop iptables service dev environment"
-      service: name=iptables state=stopped
-      ignore_errors: yes
-      when: ansible_os_family == "RedHat"
+    # - name: "Stop iptables service dev environment"
+    #   service: name=iptables state=stopped
+    #   ignore_errors: yes
+    #   when: ansible_os_family == "RedHat"
       
     - name: "Removing the default webpage"
       file: path={{ auto_site }} state=absent
