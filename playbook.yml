@@ -11,12 +11,9 @@
       # add support for ubuntu to turn variables
     - name: Install needed packages for reposado | CentOS
       when: ansible_os_family == "RedHat"
-      {{ pkg_mod }}: pkg={{ item }} state=installed
+      yum: pkg={{ item }} state=installed
       with_items:
-      - git
-      - httpd
-      - python-setuptools
-      - curl
+        - {{ apps }}
     
     # - name: Install needed packages for reposado | Ubuntu
     #   when: ansible_os_family == "Debian"
