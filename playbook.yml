@@ -58,34 +58,34 @@
         mode=0755
         state=directory
         recurse=yes
-  #   
-  #   - name: "Run the chcon command"
-  #     command: chcon -R -v --type=httpd_sys_content_t /var/local/reposado/html
-  #     when: ansible_os_family == "RedHat"
-  #     ignore_errors: yes
-  # 
-  #   - name: "Stop iptables service dev environment"
-  #     service: name=iptables state=stopped
-  #     ignore_errors: yes
-  #     when: ansible_os_family == "RedHat"
-  #     
-  #   - name: "Removing the welcome.conf site"
-  #     file: path="/etc/httpd/conf.d/welcome.conf" state=absent
-  #     when: ansible_os_family == "RedHat"
-  #     
-  #   - name: "Apache: Enable +Indexes"
-  #     lineinfile: >
-  #       dest=/etc/httpd/conf/httpd.conf
-  #       regexp="\sOptions\sFollowSymLinks"
-  #       line="    Options FollowSymLinks +Indexes"
-  #       state=present
-  #     notify: restart apache
-  #     when: ansible_os_family == "RedHat"
-  #   
-  #     # add variable to support ubuntu 
-  #   - name: "Enable Apache to start at boot"
-  #     service: name=httpd state=started enabled=yes
-  #   
-  #   - name: "Installing repo_sync cron job"
-  #     cron: name="repo_sync" user="root" hour="3" job="/usr/local/sbin/reposado/code/repo_sync >/dev/null 2>&1"
-  #   
+    
+    - name: "Run the chcon command"
+      command: chcon -R -v --type=httpd_sys_content_t /var/local/reposado/html
+      when: ansible_os_family == "RedHat"
+      ignore_errors: yes
+  
+    - name: "Stop iptables service dev environment"
+      service: name=iptables state=stopped
+      ignore_errors: yes
+      when: ansible_os_family == "RedHat"
+      
+    - name: "Removing the welcome.conf site"
+      file: path="/etc/httpd/conf.d/welcome.conf" state=absent
+      when: ansible_os_family == "RedHat"
+      
+    - name: "Apache: Enable +Indexes"
+      lineinfile: >
+        dest=/etc/httpd/conf/httpd.conf
+        regexp="\sOptions\sFollowSymLinks"
+        line="    Options FollowSymLinks +Indexes"
+        state=present
+      notify: restart apache
+      when: ansible_os_family == "RedHat"
+    
+      # add variable to support ubuntu 
+    - name: "Enable Apache to start at boot"
+      service: name={{ apache }} state=started enabled=yes
+    
+    - name: "Installing repo_sync cron job"
+      cron: name="repo_sync" user="root" hour="3" job="/usr/local/sbin/reposado/code/repo_sync >/dev/null 2>&1"
+    
