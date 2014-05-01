@@ -10,5 +10,5 @@ Trying to automate installation of reposado.
 	/var/local/reposado/html
 	/var/local/reposado/metadata
 	http://su.your.org # change this one to your FQDN
-	sudo ./repo_sync # starts the sync
+	sudo ./repo_sync
   	
