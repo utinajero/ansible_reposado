@@ -22,8 +22,14 @@
         owner=root group=root mode=0644
       notify: restart apache
       
+    - name: Create reposado dir
+      file: >
+        path=/usr/local/sbin/reposado
+        mode=0777
+        state=directory
+      
     - name: "Reposado: Checkout reposado master branch"
-      git: repo=https://github.com/wdas/reposado.git dest=/usr/local/sbin
+      git: repo=https://github.com/wdas/reposado.git dest=/usr/local/sbin/reposado
       
     - name: "Create reposado directories and set permissions"
       file: >
