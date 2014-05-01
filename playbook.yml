@@ -22,7 +22,7 @@
         owner=root group=root mode=0644
       notify: restart apache
       
-    - name: Create reposado dir
+    - name: Create reposado directory and setting permissions 
       file: >
         path=/usr/local/sbin/reposado
         mode=0755
@@ -66,7 +66,7 @@
       notify: restart apache
     
     - name: "Installing repo_sync cron job"
-      cron: name="repo_sync" user="root" hour="3" job="/usr/local/sbin/reposado/code/repo_sync >/dev/null"
+      cron: name="repo_sync" user="root" hour="3" job="/usr/local/sbin/reposado/code/repo_sync >/dev/null 2>&1"
     
     
   
