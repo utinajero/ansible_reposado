@@ -1,0 +1,9 @@
+<VirtualHost *:80>
+ServerAdmin {{ server_admin }}
+ServerName {{ domain }}
+DocumentRoot /var/local/reposado/html
+ServerAlias {{ server_alias }}
+<Directory {{ doc_root }}/>
+</Directory>
+
+</VirtualHost>
