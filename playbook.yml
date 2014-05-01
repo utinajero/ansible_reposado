@@ -5,12 +5,24 @@
     handlers:
     - name: restart apache
       command: service httpd restart
+    - name: restart apache ubuntu 
+      command: service apache2 restart
     tasks:
     - name: Install needed packages for reposado
+      when: ansible_os_family == "RedHat"
       yum: pkg={{ item }} state=installed
       with_items:
       - git
       - httpd
+      - vixie-cron
+      - python-setuptools
+      - curl
+    - name: Install needed packages for reposado | ubuntu
+      when: ansible_os_family == "Debian"
+      apt: pkg={{ item }} state=installed
+      with_items:
+      - git
+      - apache2
       - vixie-cron
       - python-setuptools
       - curl
@@ -20,8 +32,25 @@
         src=templates/redosado.conf.j2
         dest=/etc/httpd/conf.d/reposado.conf
         owner=root group=root mode=0644
+      when: ansible_os_family == "RedHat"
       notify: restart apache
-      
+    
+    - name: Create reposado virtualhost
+      template: >
+        src=templates/redosado.conf.j2
+        dest=/etc/apache2/sites-available/reposado.conf
+        owner=root group=root mode=0644
+      when: ansible_os_family == "Debian"
+      notify: restart apache ubuntu  
+    
+    - name: "Apache: Symlink Drupal virtualhost to sites-enabled."
+      file: >
+        src=/etc/apache2/sites-available/reposado.conf
+        dest=/etc/apache2/sites-enabled/reposado.conf
+        state=link
+      when: ansible_os_family == "Debian"
+      notify: restart apache
+    
     - name: Create reposado directory and setting permissions 
       file: >
         path=/usr/local/sbin/reposado
@@ -51,10 +80,12 @@
 
     - name: "Stop iptables service dev environment"
       service: name=iptables state=stopped
+      when: ansible_os_family == "RedHat"
       ignore_errors: yes
       
     - name: "Removing the welcome.conf site"
       file: path="/etc/httpd/conf.d/welcome.conf" state=absent
+      when: ansible_os_family == "RedHat"
       
     - name: "Apache: Enable +Indexes"
       lineinfile: >
@@ -63,9 +94,15 @@
         line="    Options FollowSymLinks +Indexes"
         state=present
       notify: restart apache
+      when: ansible_os_family == "RedHat"
     
     - name: "Enable Apache to start at boot"
       service: name=httpd state=started enabled=yes
+      when: ansible_os_family == "RedHat"
+      
+    - name: "Enable Apache to start at boot | ubuntu"
+      service: name=apache2 state=started enabled=yes
+      when: ansible_os_family == "Debian"
     
     - name: "Installing repo_sync cron job"
       cron: name="repo_sync" user="root" hour="3" job="/usr/local/sbin/reposado/code/repo_sync >/dev/null 2>&1"
