@@ -1,6 +1,6 @@
 ansible_reposado
 ================
-Tested on CentOS 6.5 x86_64. Will working on setting it up to also support Ubuntu.
+Tested on CentOS 6.5 x86_64. Will work on setting it up to also support Ubuntu.
 
 Trying to automate installation of reposado. 
 The playbook.yml has hosts set to all make sure to change to want you would like or remove it.
