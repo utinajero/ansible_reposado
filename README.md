@@ -1,6 +1,6 @@
 ansible_reposado
 ================
-Tested on CentOS 6.5 x86_64. Will work on setting it up to also support Ubuntu.
+Tested on CentOS 6.5 x86_64.
 Facter from puppetlabs needs to be installed on the remote host for my vars.yml file to work.
 
 Trying to automate installation of reposado. 

@@ -70,5 +70,3 @@
     - name: "Installing repo_sync cron job"
       cron: name="repo_sync" user="root" hour="3" job="/usr/local/sbin/reposado/code/repo_sync >/dev/null 2>&1"
     
-    
-  
