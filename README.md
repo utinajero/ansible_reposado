@@ -8,9 +8,9 @@ trying to automate installation of reposado
 	sudo ./repoutil --configure
 
 If everything was left with my defult config answer with:
-`/var/local/reposado/html` 
-`/var/local/reposado/metadata`
-`http://su.your.org  ##use your FQDN`
-`sudo ./repo_sync`
+  /var/local/reposado/html
+  /var/local/reposado/metadata
+  http://su.your.org  
+  sudo ./repo_sync
   
 
