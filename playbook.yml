@@ -31,22 +31,25 @@
     - name: "Reposado: Checkout reposado master branch"
       git: repo=https://github.com/wdas/reposado.git dest=/usr/local/sbin/reposado
       
-    - name: "Create reposado directories and set permissions"
+    - name: "Create reposado/html directory and setting permissions"
       file: >
         path=/var/local/reposado/html
         mode=0777
         state=directory
         recurse=yes
-    - name: "Create reposado directories and set permissions"
+    - name: "Create reposado/metadata directory and setting permissions"
       file: >
         path=/var/local/reposado/metadata
         mode=0777
         state=directory
         recurse=yes
     
-    
     - name: "Run the chcon command"
       command: chcon -R -v --type=httpd_sys_content_t /var/local/reposado/html
+
+    - name: "Stop iptables service dev mode"
+      command: service iptables stop
+      ignore_errors: yes
       
     - name: "Removing the welcome.conf site"
       command: rm -rf /etc/httpd/conf.d/welcome.conf
