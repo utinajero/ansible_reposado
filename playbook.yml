@@ -6,7 +6,7 @@
     - name: restart apache
       command: service httpd restart
     tasks:
-    - name: Install needed packages 
+    - name: Install needed packages for reposado
       yum: pkg={{ item }} state=installed
       with_items:
       - git
@@ -54,7 +54,6 @@
       ignore_errors: yes
       
     - name: "Removing the welcome.conf site"
-      #command: rm -rf /etc/httpd/conf.d/welcome.conf
       file: path="/etc/httpd/conf.d/welcome.conf" state=absent
       
     - name: "Apache: Enable +Indexes"
@@ -64,6 +63,9 @@
         line="    Options FollowSymLinks +Indexes"
         state=present
       notify: restart apache
+    
+    - name: "Enable Apache to start at boot"
+      service: name=httpd state=started enabled=yes
     
     - name: "Installing repo_sync cron job"
       cron: name="repo_sync" user="root" hour="3" job="/usr/local/sbin/reposado/code/repo_sync >/dev/null 2>&1"
