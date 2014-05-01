@@ -1,4 +1,0 @@
----
-domain: "{{ ansible_fqdn }}"
-doc_root: "/var/local/reposado/html"
-server_admin: "serveradmin@localhost"
