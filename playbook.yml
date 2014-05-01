@@ -1,20 +1,33 @@
 ---
-  - hosts: all
+  - hosts: apple_sus
     vars_files:
-    - vars.yml
+    - "vars/vars.yml"
+    - "vars/{{ ansible_os_family }}.yml"
     handlers:
     - name: restart apache
-      command: service httpd restart
+      # turn httpd to variable 
+      command: service {{apache}} restart
     tasks:
-    - name: Install needed packages for reposado
-      yum: pkg={{ item }} state=installed
+      # add support for ubuntu to turn variables
+    - name: Install needed packages for reposado | CentOS
+      when: ansible_os_family == "RedHat"
+      {{ pkg_mod }}: pkg={{ item }} state=installed
       with_items:
       - git
       - httpd
-      - vixie-cron
       - python-setuptools
       - curl
+    
+    # - name: Install needed packages for reposado | Ubuntu
+    #   when: ansible_os_family == "Debian"
+    #   apt: pkg={{ item }} state=installed
+    #   with_items:
+    #   - git
+    #   - httpd
+    #   - python-setuptools
+    #   - curl
       
+      # learn how to create vhost for ubuntu 
     - name: Create reposado virtualhost
       template: >
         src=templates/redosado.conf.j2
@@ -52,9 +65,11 @@
     - name: "Stop iptables service dev environment"
       service: name=iptables state=stopped
       ignore_errors: yes
+      when: ansible_os_family == "RedHat"
       
     - name: "Removing the welcome.conf site"
       file: path="/etc/httpd/conf.d/welcome.conf" state=absent
+      when: ansible_os_family == "RedHat"
       
     - name: "Apache: Enable +Indexes"
       lineinfile: >
@@ -63,7 +78,9 @@
         line="    Options FollowSymLinks +Indexes"
         state=present
       notify: restart apache
+      when: ansible_os_family == "RedHat"
     
+      # add variable to support ubuntu 
     - name: "Enable Apache to start at boot"
       service: name=httpd state=started enabled=yes
     
