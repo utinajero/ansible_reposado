@@ -42,13 +42,13 @@
       when: ansible_os_family == "Debian"
       notify: restart apache ubuntu  
     
-    - name: "Apache: Symlink Drupal virtualhost to sites-enabled."
+    - name: "Apache: Symlink virtualhost to sites-enabled."
       file: >
         src=/etc/apache2/sites-available/reposado.conf
         dest=/etc/apache2/sites-enabled/reposado.conf
         state=link
       when: ansible_os_family == "Debian"
-      notify: restart apache
+      notify: restart apache ubuntu
     
     - name: Create reposado directory and setting permissions 
       file: >
