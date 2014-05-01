@@ -23,7 +23,6 @@
       with_items:
       - git
       - apache2
-      - vixie-cron
       - python-setuptools
       - curl
       
