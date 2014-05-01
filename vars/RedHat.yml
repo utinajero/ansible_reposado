@@ -2,3 +2,4 @@
 apache: httpd
 pkg_mod: yum 
 apps: ['git', 'httpd', 'python-setuptools', 'curl']
+auto_site: "/etc/httpd/conf.d/welcome.conf"

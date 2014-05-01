@@ -36,6 +36,7 @@
         src=templates/susreposado.conf.j2
         dest=/etc/apache2/sites-available/reposado.conf
         owner=root group=root mode=0644
+      notify: restart apache 
       
     - name: Create reposado directory and setting permissions 
       file: >
@@ -69,9 +70,8 @@
       ignore_errors: yes
       when: ansible_os_family == "RedHat"
       
-    - name: "Removing the welcome.conf site"
-      file: path="/etc/httpd/conf.d/welcome.conf" state=absent
-      when: ansible_os_family == "RedHat"
+    - name: "Removing the default webpage"
+      file: path={{ auto_site }} state=absent
       
     - name: "Apache: Enable +Indexes"
       lineinfile: >
@@ -81,8 +81,12 @@
         state=present
       notify: restart apache
       when: ansible_os_family == "RedHat"
-    
-      # add variable to support ubuntu 
+      
+    - name: "Enable apache site for Ubuntu"
+      when: ansible_os_family == "Debian"
+      command: a2ensite {{ domain }}
+      notify: restart apache
+
     - name: "Enable Apache to start at boot"
       service: name={{ apache }} state=started enabled=yes
     

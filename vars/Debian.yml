@@ -2,3 +2,4 @@
 apache: apache2
 pkg_mod: apt
 apps: ['git', 'apache2', 'python-setuptools', 'curl']
+auto_site: "/var/www/index.html"
