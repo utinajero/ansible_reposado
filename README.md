@@ -1,10 +1,9 @@
 ansible_reposado
 ================
-Tested on CentOS 6.5 x86_64.
-Facter from puppetlabs needs to be installed on the remote host for my vars.yml file to work.
+Tested on CentOS 6.5 x86_64, Ubuntu 12.04 LTS x86_64.
 
 Trying to automate installation of reposado. 
-The playbook.yml has hosts set to all make sure to change it to want you would like or remove it.
+The playbook.yml has hosts set to reposado make sure to change it to want you would like.
 
 	git clone https://github.com/utinajero/ansible_reposado.git 
 	ansible-playbook /path/to/playbook/playbook.yml --sudo
