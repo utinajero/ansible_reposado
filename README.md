@@ -7,7 +7,7 @@ Trying to automate installation of reposado.
 	cd /usr/local/sbin/reposado/code
 	sudo ./repoutil --configure # the next 3 lines are the answers that need to be entered
 	/var/local/reposado/html
-        /var/local/reposado/metadata
+	/var/local/reposado/metadata
 	http://su.your.org
 	sudo ./repo_sync
   	
