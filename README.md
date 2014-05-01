@@ -1,7 +1,7 @@
 ansible_reposado
 ================
 
-trying to automate installation of reposado
+Trying to automate installation of reposado. 
 
 	ansible-playbook /path/to/playbook/playbook.yml --sudo
 	cd /usr/local/sbin/reposado/code
