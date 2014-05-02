@@ -6,7 +6,7 @@ Tested on CentOS 6.5 x86_64, Ubuntu 12.04 LTS x86_64.
 The playbook.yml has hosts set to reposado make sure to change it to something you would like.
 I need to test Ubuntu a bit more, but I believe it works. 
 
-Use on macine running ansibale
+Use on machine running ansibale
 ```	
 git clone https://github.com/utinajero/ansible_reposado.git 
 ansible-playbook /path/to/playbook/playbook.yml --sudo
